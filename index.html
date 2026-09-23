@@ -18,7 +18,7 @@
   nav a{display:block;padding:6px 10px;border-radius:6px;color:var(--ink);text-decoration:none;font-size:14px;}
   nav a:hover{background:var(--chip);}
   nav a.active{background:var(--chip);color:var(--accent);font-weight:600;}
-  main{flex:1;padding:48px 64px;max-width:860px;}
+  main{flex:1;padding:48px 64px;max-width:900px;}
   .page{display:none;}
   .page.active{display:block;}
   .page h2{font-size:28px;color:var(--accent);border-bottom:2px solid var(--line);padding-bottom:8px;}
@@ -28,6 +28,7 @@
   .tag{display:inline-block;background:var(--chip);color:var(--accent);font-size:11px;padding:2px 9px;border-radius:10px;margin-right:6px;}
   code{background:var(--chip);padding:1px 6px;border-radius:4px;font-size:13.5px;}
   .welcome{font-size:15px;color:var(--muted);}
+  a.src{color:var(--accent);font-size:13px;}
   @media(max-width:820px){body{flex-direction:column;}nav{width:100%;height:auto;position:static;}main{padding:28px;}}
 </style>
 </head>
@@ -38,69 +39,93 @@
   <div class="group">首页</div>
   <a href="#home" class="active" data-page="home">关于本站</a>
   <div class="group">微分几何</div>
-  <a href="#manifolds" data-page="manifolds">微分流形</a>
-  <a href="#lie-groups" data-page="lie-groups">Lie 群与 Lie 代数</a>
-  <div class="group">几何控制</div>
-  <a href="#affine-systems" data-page="affine-systems">仿射控制系统</a>
-  <a href="#frobenius" data-page="frobenius">Frobenius 定理</a>
-  <div class="group">源文件</div>
-  <a href="https://github.com/liuchaobit/GeometricNote" target="_blank" rel="noopener">在 GitHub 上编辑</a>
+  <a href="#tangent-cotangent-bundle" data-page="tangent-cotangent-bundle">切丛、余切丛与辛几何</a>
+  <a href="#lifts" data-page="lifts">向量场的切/余切提升</a>
+  <a href="#ehresmann-connections" data-page="ehresmann-connections">Ehresmann 联络与 Sasaki 度量</a>
+  <a href="#jacobi-equations" data-page="jacobi-equations">Jacobi 与伴随 Jacobi 方程</a>
+  <div class="group">几何控制基础</div>
+  <a href="#controllability" data-page="controllability">可控性（含对称性）</a>
+  <a href="#linearization-relative-equilibria" data-page="linearization-relative-equilibria">相对平衡的线性化</a>
+  <a href="#stabilization-relative-equilibria" data-page="stabilization-relative-equilibria">相对平衡的镇定</a>
+  <a href="#optimal-control" data-page="optimal-control">最优控制与极大值原理</a>
+  <div class="group">论文资源</div>
+  <a href="papers/2004_Geometric_control_of_mechanical_systems_Bullo_Lewis.pdf" target="_blank" rel="noopener">Bullo-Lewis 补充材料 PDF</a>
+  <a href="README.md" target="_blank" rel="noopener">仓库 README</a>
 </nav>
 <main>
   <section class="page active" id="home">
     <h2>GeometricNote</h2>
     <p class="meta"><span class="tag">differential geometry</span><span class="tag">geometric control</span></p>
-    <p class="welcome">这是一份个人学术笔记 wiki，记录微分几何与理论控制（几何控制）方向的概念、定理与推导。所有公式由 KaTeX 渲染。</p>
-    <h3>导航</h3>
+    <p class="welcome">这是一份个人学术笔记 wiki，围绕 Bullo &amp; Lewis《Geometric Control of Mechanical Systems》补充材料（2005）整理，覆盖微分几何（S1）与几何控制基础（S2–S4）两个方向。</p>
+    <h3>知识地图</h3>
     <ul>
-      <li><b>微分几何</b>：微分流形、切空间与切丛、Lie 群与 Lie 代数、微分形式与外微分、联络与曲率。</li>
-      <li><b>几何控制</b>：仿射控制系统、分布与不变分布、Frobenius 定理、可达性、控制 Lie 代数与最优控制。</li>
+      <li><b>微分几何</b>：切/余切丛与辛几何、微分形式与外微分、哈密顿向量场、切/余切提升、Ehresmann 联络、Sasaki 度量、Jacobi 方程与伴随 Jacobi 方程。</li>
+      <li><b>几何控制基础</b>：受迫仿射联络控制系统、可达性与可控性（含各向同性耗散、Lie 群/主丛对称性）、相对平衡的线性化与镇定、极大值原理与最优控制。</li>
     </ul>
     <h3>如何添加笔记</h3>
-    <p>在 <code>notes/</code> 目录下新建 Markdown 文件，并在左侧导航 <code>&lt;nav&gt;</code> 中加入对应条目与 <code>&lt;section&gt;</code> 即可。公式使用 <code>$...$</code>（行内）或 <code>$$...$$</code>（行间）。</p>
+    <p>在 <code>notes/</code> 对应分类目录下新建 Markdown 文件，并在左侧导航 <code>&lt;nav&gt;</code> 中加入对应条目与 <code>&lt;section&gt;</code> 即可。公式使用 <code>$...$</code>（行内）或 <code>$$...$$</code>（行间），KaTeX 渲染。</p>
+    <p>论文原文存放于 <code>papers/</code>，每篇笔记顶部均附有对应章节与论文链接。</p>
   </section>
 
-  <section class="page" id="manifolds">
-    <h2>微分流形</h2>
-    <p class="meta">section · differential geometry</p>
-    <p>一个 <b>$n$ 维光滑流形</b> $M$ 是一个 Hausdorff、第二可数的拓扑空间，连同一个光滑坐标卡覆盖（atlas）$\{(U_\alpha,\varphi_\alpha)\}$，其中每个 $\varphi_\alpha:U_\alpha\to\mathbb{R}^n$ 是同胚，且转移映射
-    $$\varphi_\beta\circ\varphi_\alpha^{-1}:\varphi_\alpha(U_\alpha\cap U_\beta)\to\mathbb{R}^n$$
-    光滑。</p>
-    <h3>切空间</h3>
-    <p>在 $p\in M$ 处的切空间 $T_pM$ 由点导子（derivation）构成。坐标 $x^i$ 下，自然基为 $\left.\frac{\partial}{\partial x^i}\right|_p$，任一切向量 $v\in T_pM$ 可写为
-    $$v=\sum_{i=1}^n v^i\left.\frac{\partial}{\partial x^i}\right|_p.$$</p>
-    <h3>切丛</h3>
-    <p>切丛 $TM=\bigsqcup_{p\in M}T_pM$ 是一个 $2n$ 维流形，投影 $\pi:TM\to M$。光滑映射 $X:M\to TM$，满足 $\pi\circ X=\mathrm{id}$，即为向量场。</p>
+  <section class="page" id="tangent-cotangent-bundle">
+    <h2>切丛、余切丛与辛几何</h2>
+    <p class="meta">微分几何 · S1.1 <a class="src" href="papers/2004_Geometric_control_of_mechanical_systems_Bullo_Lewis.pdf" target="_blank" rel="noopener">[论文 §S1.1]</a></p>
+    <h3>微分形式</h3>
+    <p>外 $k$-形式是反对称 $(0,k)$-张量；楔积 $\alpha\wedge\beta=\frac{(k+l)!}{k!l!}\mathrm{Alt}(\alpha\otimes\beta)$；外微分 $d\alpha=\frac{\partial\alpha_{i_1\cdots i_k}}{\partial x^j}dx^j\wedge dx^{i_1}\wedge\cdots$。</p>
+    <h3>辛流形</h3>
+    <p>辛流形 $(M,\omega)$：$\omega$ 闭且非退化，$\dim M$ 为偶数。余切丛典范形式 $\omega_0=-d\theta_0=dq^i\wedge dp_i$。</p>
+    <h3>哈密顿向量场</h3>
+    <p>$X_H=-\omega^\sharp(dH)$，自然坐标下 $X_H=\frac{\partial H}{\partial p_i}\frac{\partial}{\partial q^i}-\frac{\partial H}{\partial q^i}\frac{\partial}{\partial p_i}$，即哈密顿方程。</p>
   </section>
 
-  <section class="page" id="lie-groups">
-    <h2>Lie 群与 Lie 代数</h2>
-    <p class="meta">section · differential geometry</p>
-    <p><b>Lie 群</b> $G$ 既是群又是光滑流形，群乘法与求逆光滑。典型例子是矩阵群，如 $GL(n,\mathbb{R})$、$SO(3)$。其 <b>Lie 代数</b> $\mathfrak{g}=T_eG$ 在单位元处装备由左不变向量场对易子诱导的括号：
-    $$[X,Y](f)=X(Yf)-Y(Xf).$$</p>
-    <h3>指数映射</h3>
-    <p>对 $X\in\mathfrak{g}$，指数映射 $\exp:\mathfrak{g}\to G$ 由左不变向量场的流给出；矩阵情形退化为矩阵指数
-    $$\exp(X)=\sum_{k=0}^{\infty}\frac{X^k}{k!}.$$</p>
+  <section class="page" id="lifts">
+    <h2>向量场的切提升与余切提升</h2>
+    <p class="meta">微分几何 · S1.2 <a class="src" href="papers/2004_Geometric_control_of_mechanical_systems_Bullo_Lewis.pdf" target="_blank" rel="noopener">[论文 §S1.2]</a></p>
+    <p>切提升 $X^T=X^i\partial_{x^i}+(\partial_{x^j}X^i\,v^j+\partial_tX^i)\partial_{v^i}$；余切提升 $X^{T^*}=X^i\partial_{x^i}-\partial_{x^i}X^j\,p_j\partial_{p_i}$，是哈密顿量 $H_X=\langle\alpha_x;X\rangle$ 的哈密顿向量场。$X^T\oplus X^{T^*}$ 保持配对 $\langle\alpha_x;v_x\rangle$。</p>
   </section>
 
-  <section class="page" id="affine-systems">
-    <h2>仿射控制系统</h2>
-    <p class="meta">section · geometric control</p>
-    <p>状态空间为光滑流形 $M$ 上的<b>仿射非线性系统</b>写作
-    $$\dot{x}=f_0(x)+\sum_{i=1}^m u_i\,f_i(x),\qquad u\in\mathbb{R}^m,$$
-    其中 $f_0,f_1,\dots,f_m$ 是 $M$ 上的光滑向量场。控制通过在 $f_i$ 方向上的“推力”改变状态演化。</p>
-    <h3>可控性与可达集</h3>
-    <p>由向量场生成的 <b>可达集</b> 依赖于这些场在 Lie 括号下生成的 <b>控制 Lie 代数</b>（controllability Lie algebra）：
-    $$\mathcal{C}=\mathrm{Lie}\{f_0,f_1,\dots,f_m\}.$$
-    若 $\dim\mathcal{C}(p)=\dim M$，则系统在 $p$ 处局部可控（可达性的充分条件之一）。</p>
+  <section class="page" id="ehresmann-connections">
+    <h2>Ehresmann 联络与 Sasaki 度量</h2>
+    <p class="meta">微分几何 · S1.3 <a class="src" href="papers/2004_Geometric_control_of_mechanical_systems_Bullo_Lewis.pdf" target="_blank" rel="noopener">[论文 §S1.3]</a></p>
+    <p>Ehresmann 联络 = 水平子丛 $HM$ 的选取，$TM=HM\oplus VM$；曲率 $\Omega_{HM}(u,v)=-\omega_{HM}([U,V])$。仿射联络在 $TQ$ 诱导联络，曲率由 $R,T$ 表达；无挠情形 $\Omega_{HTQ}(\mathrm{hlft}(u),\mathrm{hlft}(w))=\mathrm{vlft}(R(u,w)v)$。Sasaki 度量：$\mathbb{G}^T(u_1\oplus w_1,u_2\oplus w_2)=\mathbb{G}(u_1,u_2)+\mathbb{G}(w_1,w_2)$。</p>
   </section>
 
-  <section class="page" id="frobenius">
-    <h2>Frobenius 定理</h2>
-    <p class="meta">section · geometric control</p>
-    <p>$M$ 上一个 <b>$k$ 维分布</b> $\Delta$ 对每个 $p$ 指定一个 $k$ 维子空间 $\Delta(p)\subset T_pM$。称 $\Delta$ <b>对合</b>（involutive），若对任意 $X,Y\in\Delta$，有 $[X,Y]\in\Delta$。</p>
-    <h3>定理</h3>
-    <p>一个分布 $\Delta$ 是<b>可积</b>的（即局部可由浸入子流形叶状分割，过 $p$ 有唯一极大积分子流形）当且仅当 $\Delta$ 对合。几何控制中，不变分布 $\Delta$ 满足 $[f_i,\Delta]\subset\Delta$，其积分子流形刻画系统无法跨出的“块”，是可控性分解与最小实现的几何基础。</p>
+  <section class="page" id="jacobi-equations">
+    <h2>Jacobi 方程与伴随 Jacobi 方程</h2>
+    <p class="meta">微分几何 · S1.3.10 <a class="src" href="papers/2004_Geometric_control_of_mechanical_systems_Bullo_Lewis.pdf" target="_blank" rel="noopener">[论文 §S1.3.10]</a></p>
+    <p>沿测地线：$\nabla_{\gamma'}^2U+R(U,\gamma')\gamma'+\nabla_{\gamma'}(T(U,\gamma'))=0$，$W=\nabla_{\gamma'}U+\tfrac12T(U,\gamma')$。伴随 Jacobi 方程：$\nabla_{\gamma'}^2\alpha+R^*(\alpha,\gamma')\gamma'-T^*(\nabla_{\gamma'}\alpha,\gamma')=0$。Levi-Civita 下 $\mathbb{G}^\sharp(\lambda)$ 为 Jacobi 场 $\iff\lambda$ 满足伴随 Jacobi 方程。协态方程的核心。</p>
+  </section>
+
+  <section class="page" id="controllability">
+    <h2>可控性（Controllability）</h2>
+    <p class="meta">几何控制基础 · S2 <a class="src" href="papers/2004_Geometric_control_of_mechanical_systems_Bullo_Lewis.pdf" target="_blank" rel="noopener">[论文 §S2]</a></p>
+    <h3>带基础外力</h3>
+    <p>$\nabla_{\gamma'}\gamma'=\sum u^a Y_a+Y$。算法 S2.1 生成 $\mathcal{C}_{\mathrm{hor}}^{(k)},\mathcal{C}_{\mathrm{ver}}^{(k)}$；定理 S2.2：可达 $\iff\mathcal{C}_{\mathrm{ver}}^{(\infty)}=\mathcal{D}$ 且 $\mathcal{C}_{\mathrm{hor}}^{(\infty)}=TQ$；构型可达 $\iff\mathcal{C}_{\mathrm{hor}}^{(\infty)}=TQ$。推论 S2.5 给出 STLC/STLCC 条件（权重与障碍）。</p>
+    <h3>各向同性耗散</h3>
+    <p>$\nabla_{\gamma'}\gamma'=\sum u^aY_a-\delta\gamma'$；定理 S2.7：$\mathrm{Lie}^{(\infty)}\simeq\mathrm{Lie}^{(\infty)}(\mathrm{Sym}^{(\infty)}(\mathscr{Y}))\oplus\mathrm{Sym}^{(\infty)}(\mathscr{Y})$。</p>
+    <h3>对称性</h3>
+    <p>Lie 群 $Q=G$：只需在单位元做对称积代数运算（命题 S2.8）；主丛 $\pi:Q\to Q/G$：$HQ=J_Q^{-1}(0)$（命题 S2.11），定理 S2.12 连接原系统与约化系统的可控性。</p>
+  </section>
+
+  <section class="page" id="linearization-relative-equilibria">
+    <h2>相对平衡的线性化</h2>
+    <p class="meta">几何控制基础 · S3.1–S3.3 <a class="src" href="papers/2004_Geometric_control_of_mechanical_systems_Bullo_Lewis.pdf" target="_blank" rel="noopener">[论文 §S3]</a></p>
+    <p>受迫仿射联络系统沿受控轨迹线性化（命题 S3.7、定义 3.8）：$\nabla_{\gamma_0'}^2\xi+A_\Sigma\cdot\xi=\sum u^aY_a$。相对平衡 $\chi$ 有两种等价线性化视角（未约化 / 约化，定理 S3.14）。线性化有效能量 $E_\chi=\tfrac12\|w-\nabla_uX\|^2+\tfrac12\mathrm{Hess}\,V_X(u,u)$。线性稳定性：$\mathrm{Hess}(V_X)_B$ 正定 $\Rightarrow$ 基底+纤维稳定（定理 S3.25）。</p>
+  </section>
+
+  <section class="page" id="stabilization-relative-equilibria">
+    <h2>相对平衡的镇定</h2>
+    <p class="meta">几何控制基础 · S3.4–S3.5 <a class="src" href="papers/2004_Geometric_control_of_mechanical_systems_Bullo_Lewis.pdf" target="_blank" rel="noopener">[论文 §S3.4–S3.5]</a></p>
+    <p>受控相对平衡 $(\chi,u_0)$：$\chi$ 是 $X$ 的积分曲线且满足运动方程。$X$-不变反馈：约化系统镇定 $\Rightarrow$ 原系统 base+fiber 镇定（命题 S3.32）。设计路线：约化线性系统 PD 反馈（相容性增益）→ 势能塑形。区分 base（商流形）与 fiber（对称方向）两个镇定目标。</p>
+  </section>
+
+  <section class="page" id="optimal-control">
+    <h2>最优控制与极大值原理</h2>
+    <p class="meta">几何控制基础 · S4 <a class="src" href="papers/2004_Geometric_control_of_mechanical_systems_Bullo_Lewis.pdf" target="_blank" rel="noopener">[论文 §S4]</a></p>
+    <h3>极大值原理（定理 S4.11）</h3>
+    <p>$H_{\Sigma,F}(\alpha_x,u)=\alpha_x\cdot f(x,u)-F(x,u)$；$\chi$ 是 $X_{H^{\max}}$ 的积分曲线，横截条件 $\chi(a)\in\mathrm{ann}(T_{\gamma(a)}S_0)$，$H(\chi(t),u(t))=C$ a.e.。极值分类：正常/异常、正则/奇异。</p>
+    <h3>仿射联络系统（定理 S4.26）</h3>
+    <p>协态满足二阶伴随方程，左端即伴随 Jacobi 方程：$\nabla_{\gamma'}^2\lambda+R^*(\lambda,\gamma')\gamma'-T^*(\nabla_{\gamma'}\lambda,\gamma')=\cdots$。几何（$\nabla,R,T$）通过 Ehresmann 联络解耦进入最优控制。力极小（S4.5）、时间最优（S4.6）、平面刚体例（S4.7）。</p>
   </section>
 </main>
 <script>
